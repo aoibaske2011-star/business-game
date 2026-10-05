@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ビジネス思考ゲーム</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#10131a;
+  color:white;
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+h1{text-align:center}
+.card{
+  background:#1c2230;
+  padding:22px;
+  border-radius:18px;
+  margin-top:20px;
+}
+.question{
+  font-size:19px;
+  line-height:1.7;
+}
+button{
+  width:100%;
+  padding:15px;
+  margin-top:12px;
+  border:0;
+  border-radius:12px;
+  font-size:16px;
+  background:#4f7cff;
+  color:white;
+}
+.choice{
+  background:#2b3344;
+}
+.hidden{display:none}
+.score{
+  font-size:42px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💼 ビジネス思考ゲーム</h1>
+
+<div id="start" class="card">
+<div class="question">
+あなたは小さなラーメン屋の経営者です。<br><br>
+
+味の評判は良く、駅から徒歩5分。<br>
+値段も普通です。<br><br>
+
+なのに、お客さんが少ない。<br><br>
+
+あなたならどうする？
+</div>
+
+<button onclick="startGame()">ゲーム開始</button>
+</div>
+
+
+<div id="q1" class="card hidden">
+
+<div class="question">
+まず何をする？
+</div>
+
+<button class="choice" onclick="answer(1)">
+A：新しいメニューを作る
+</button>
+
+<button class="choice" onclick="answer(2)">
+B：値段を大幅に下げる
+</button>
+
+<button class="choice" onclick="answer(3)">
+C：広告を大量に出す
+</button>
+
+<button class="choice" onclick="answer(4)">
+D：まず「なぜ来ないのか」を調査する
+</button>
+
+</div>
+
+
+<div id="reaction" class="card hidden">
+
+<div class="question" id="reactionText"></div>
+
+<button onclick="next()">さらに考える</button>
+
+</div>
+
+
+<div id="q2" class="card hidden">
+
+<div class="question">
+この反論にどう対応する？
+</div>
+
+<button class="choice" onclick="finish(1)">
+A：とりあえずやってみる
+</button>
+
+<button class="choice" onclick="finish(2)">
+B：小さく試して結果を数字で確認する
+</button>
+
+<button class="choice" onclick="finish(3)">
+C：他の店もやっているから大丈夫
+</button>
+
+<button class="choice" onclick="finish(4)">
+D：お金をかけて一気にやる
+</button>
+
+</div>
+
+
+<div id="result" class="card hidden">
+
+<h2>結果</h2>
+
+<div class="score" id="score"></div>
+
+<p id="comment"></p>
+
+<button onclick="location.reload()">
+もう一度プレイ
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+let first=0;
+
+function startGame(){
+ document.getElementById("start").classList.add("hidden");
+ document.getElementById("q1").classList.remove("hidden");
+}
+
+function answer(n){
+
+ first=n;
+
+ document.getElementById("q1").classList.add("hidden");
+ document.getElementById("reaction").classList.remove("hidden");
+
+ let text="";
+
+ if(n==1)
+ text="客「新メニューを作ったら、本当にお客さんが増えるの？開発費もかかるよね。」";
+
+ if(n==2)
+ text="客「安くしたら来るとは限らないよ。利益も減っちゃうよね。」";
+
+ if(n==3)
+ text="客「広告を出しても、そもそも誰に向けて広告するの？」";
+
+ if(n==4)
+ text="客「調査して何が分かれば、次の行動を決められるの？」";
+
+ document.getElementById("reactionText").innerHTML=text;
+}
+
+function next(){
+ document.getElementById("reaction").classList.add("hidden");
+ document.getElementById("q2").classList.remove("hidden");
+}
+
+function finish(second){
+
+ let score=0;
+
+ if(first==4) score+=45;
+ else if(first==1) score+=35;
+ else if(first==3) score+=25;
+ else score+=15;
+
+ if(second==2) score+=50;
+ else if(second==1) score+=35;
+ else if(second==3) score+=20;
+ else score+=10;
+
+ let comment="";
+
+ if(score>=85){
+ comment="かなり良い！<br><br>原因を調べ、小さく試して結果を見る考え方ができています。";
+ }
+ else if(score>=70){
+ comment="なかなか良い！<br><br>アイデアは良いです。次は「誰が欲しいのか」まで考えてみよう。";
+ }
+ else if(score>=50){
+ comment="もう一歩！<br><br>大きく動く前に、まずお客さんの問題を調べてみよう。";
+ }
+ else{
+ comment="まだまだ伸びしろあり！<br><br>ビジネスでは、いきなり大金を使わず小さく試すことが重要です。";
+ }
+
+ document.getElementById("q2").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+
+ document.getElementById("score").innerHTML=score+"/100";
+ document.getElementById("comment").innerHTML=comment;
+}
+
+</script>
+
+</body>
+</html>
